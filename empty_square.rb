@@ -4,6 +4,6 @@ class EmptySquare
   end
 
   def to_s
-    "   "
+    "    "
   end
 end

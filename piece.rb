@@ -9,14 +9,14 @@ class Piece
   end
 
   def to_s
-    " #{symbol} "
+    " #{symbol}  "
   end
 
   def symbol
     if color == :red
-      "\u25CF".colorize(:color => :red)
+      "\u26AA".colorize(:color => :red)
     else
-      "\u25CF".colorize(:color => :white)
+      "\u26AB".colorize(:color => :white)
     end
   end
 end

@@ -44,6 +44,7 @@ class Board
   end
 
   def display
+    system('clear')
     puts render
   end
 
