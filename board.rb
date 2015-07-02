@@ -36,14 +36,20 @@ class Board
 
   def render
     grid.map.with_index do |row, row_i|
-      row.map.with_index do |cell, col_i|
-        if (row_i + col_i) % 2 == 0
-          cell.to_s.colorize(:background => :yellow)
-        else
-          cell.to_s.colorize(:background => :green)
-        end
-      end.join("")
+      render_row(row, row_i)
     end.join("\n")
+  end
+
+  def render_row(row, row_i)
+    row.map.with_index do |cell, col_i|
+      if [row_i, col_i] == cursor_pos
+        cell.to_s.colorize(:background => :cyan)
+      elsif (row_i + col_i) % 2 == 0
+        cell.to_s.colorize(:background => :yellow)
+      else
+        cell.to_s.colorize(:background => :green)
+      end
+    end.join("")
   end
 
   def populate_grid(size)
