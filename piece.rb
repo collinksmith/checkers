@@ -23,7 +23,10 @@ class Piece
   end
 
   def perform_move(end_pos)
-
+    if valid_move?(end_pos)
+      board.move(pos, end_pos)
+      self.pos = end_pos
+    end
   end
 
   def perform_slide(end_pos)
@@ -47,6 +50,8 @@ class Piece
   end
 
   private
+
+  attr_writer :pos
 
   def valid_slide?(end_pos)
     end_row, end_col = end_pos[0], end_pos[1]
