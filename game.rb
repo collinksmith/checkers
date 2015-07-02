@@ -68,12 +68,14 @@ class Game
       board.move_cursor(:right)
     when "\r"
       if board.selected_pos
-        board.selected_piece.perform_move(board.cursor_pos)
+        board.selected_piece.perform_moves(board.move_seq)
         board.reset_selected_pos
         return true
       elsif board.cursor_piece.color == current_player.color
         board.set_selected_pos
       end
+    when " "
+      board.add_to_move_seq(board.cursor_pos) if board.selected_piece
     when 'q'
       exit
     end
