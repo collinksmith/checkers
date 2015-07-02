@@ -12,23 +12,36 @@ class Game
   def play
     loop do
       display_board
-      input = current_player.get_input
-      process_input(input)
+
+      moved = false
+      until moved
+        input = current_player.get_input
+        moved = process_input(input)
+        display_board
+      end
+
+      switch_players!
     end
   end
 
   def display_board
     system('clear')
     board.display
+    puts "#{current_player.to_s.capitalize}'s turn"
   end
 
   def current_player
     players.first
   end
 
+  def switch_players!
+    players.rotate!
+  end
+
   def process_input(input)
     case input
     when 'w'
+      puts "Selected w"
       board.move_cursor(:up)
     when 'a'
       board.move_cursor(:left)
@@ -38,14 +51,17 @@ class Game
       board.move_cursor(:right)
     when "\r"
       if board.selected_pos
-        # Move Piece
+        board.selected_piece.perform_move(board.cursor_pos)
         board.reset_selected_pos
-      else
+        return true
+      elsif board.cursor_piece.color == current_player.color
         board.set_selected_pos
       end
     when 'q'
       exit
     end
+
+    false
   end
 end
 
