@@ -6,7 +6,7 @@ class Board
   attr_reader :grid, :size, :cursor_pos, :selected_pos
   attr_accessor :current_player_color
 
-  def initialize(size, grid = nil)
+  def initialize(size = 8, grid = nil)
     @size = size
     @cursor_pos = [0, 0]
     @selected_pos = nil
@@ -74,6 +74,16 @@ class Board
   def reset_selected_pos
     self.selected_pos = nil
   end
+
+  def dup
+    new_grid = grid.map { |row| row.map { |piece| piece.dup } }
+    new_board = Board.new(size, new_grid)
+    new_board.grid.map { |row| row.map { |piece| piece.board = self } }
+  end
+
+  protected
+
+  attr_writer :grid
 
   private
 

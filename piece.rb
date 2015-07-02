@@ -3,13 +3,14 @@ require 'colorize'
 require 'byebug'
 
 class Piece
-  attr_reader :color, :pos, :kinged, :board
+  attr_reader :color, :pos, :kinged
+  attr_accessor :board
 
-  def initialize(color, pos, board)
+  def initialize(color, pos, kinged = false, board = nil)
     @color = color
     @pos = pos
     @board = board
-    @kinged = false
+    @kinged = kinged
   end
 
   def to_s
@@ -22,6 +23,19 @@ class Piece
 
   def empty?
     false
+  end
+
+  def valid_move_seq?(moves)
+    new_board = board.dup
+
+  end
+
+  def perform_moves!(moves, start_pos)
+    if moves.length == 1
+      perform_move(moves.first)
+    else
+      moves.each { |move| perform_move(move)}
+    end
   end
 
   def perform_move(end_pos)
@@ -55,6 +69,10 @@ class Piece
 
   def king?
     kinged
+  end
+
+  def dup
+    Piece.new(color, pos.dup, kinged)
   end
 
   private

@@ -1,4 +1,10 @@
 class EmptySquare
+  attr_accessor :board
+
+  def initialize
+    @board = nil
+  end
+
   def empty?
     true
   end
@@ -13,5 +19,9 @@ class EmptySquare
 
   def color
     nil
+  end
+
+  def dup
+    self.class.new
   end
 end
