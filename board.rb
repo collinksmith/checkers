@@ -63,9 +63,13 @@ class Board
 
   def render_row(row, row_i)
     row.map.with_index do |cell, col_i|
-      if [row_i, col_i] == selected_pos
+      pos = row_i, col_i
+
+      if self[*cursor_pos].valid_move?(pos)
+        cell.to_s.colorize(:background => :light_red)
+      elsif pos == selected_pos
         cell.to_s.colorize(:background => :light_magenta)
-      elsif [row_i, col_i] == cursor_pos
+      elsif pos == cursor_pos
         cell.to_s.colorize(:background => :light_cyan)
       elsif (row_i + col_i) % 2 == 0
         cell.to_s.colorize(:background => :yellow)
@@ -100,11 +104,11 @@ class Board
   def fill_row(row, row_i, odd, color)
     if odd
       row.map.with_index do |cell, col_i|
-        row[col_i] = Piece.new(color, [row_i, col_i]) unless col_i % 2 == 0
+        row[col_i] = Piece.new(color, [row_i, col_i], self) unless col_i % 2 == 0
       end
     else
       row.map.with_index do |cell, col_i|
-        row[col_i] = Piece.new(color, [row_i, col_i]) if col_i % 2 == 0
+        row[col_i] = Piece.new(color, [row_i, col_i], self) if col_i % 2 == 0
       end
     end
   end
