@@ -6,13 +6,14 @@ class Board
   attr_reader :grid, :size, :cursor_pos, :selected_pos, :move_seq
   attr_accessor :current_player_color
 
-  def initialize(size = 8, grid = nil)
+  def initialize(size = 8, grid = nil, cursor_pos = [0, 0], selected_pos = nil,
+                 move_seq = [], current_player_color = :white)
     @size = size
-    @cursor_pos = [0, 0]
-    @selected_pos = nil
-    @move_seq = []
+    @cursor_pos = cursor_pos
+    @selected_pos = selected_pos
+    @move_seq = move_seq
     @grid = grid || populate_grid(size)
-    @current_player_color = :white
+    @current_player_color = current_player_color
   end
 
   def [](row, col)
@@ -93,27 +94,24 @@ class Board
 
   def
 
+  def tester
+    puts "test"
+  end
+
   def deep_dup
-    p "DUPING THE BOARD"
-    new_grid = dup_grid
-    # new_grid = grid.map { |row| row.map { |piece| piece.dup } }
-    new_board = self.class.new(size, new_grid)
-    new_board.grid.map! { |row| row.map! { |piece| piece.board = self } }
+    new_grid = grid.map { |row| row.map { |piece| piece.dup } }
+    new_board = self.class.new(size, new_grid, cursor_pos.dup, selected_pos.dup,
+                               dup_move_seq, current_player_color)
+
+    new_board.all_pieces.each { |piece| piece.board = new_board }
+
     new_board
   end
 
-  def dup_grid
-    new_grid = Array.new(8) { [] }
-    grid.each_with_index do |row, row_i|
-      row.each do |cell|
-        p "duping #{cell}"
-        new_grid[row_i] << cell.dup
-      end
-    end
-
-    p "TESTING DUP_GRID METHOD: #{new_grid == grid}"
-
-    new_grid
+  def dup_move_seq
+    new_seq = []
+    move_seq.each { |move| new_seq << move.dup }
+    new_seq
   end
 
   protected

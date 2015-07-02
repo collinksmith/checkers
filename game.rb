@@ -70,7 +70,6 @@ class Game
       if board.selected_pos
         board.add_to_move_seq(board.cursor_pos)
         board.selected_piece.perform_moves(board.move_seq)
-        p "Done performing moves"
         board.reset_selected_pos
         return true
       elsif board.cursor_piece.color == current_player.color

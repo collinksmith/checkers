@@ -36,14 +36,7 @@ class Piece
 
   def valid_move_seq?(moves)
     begin
-      p "Board is a: #{board.class}"
       new_board = board.deep_dup
-
-      p "Checking from VALID_MOVE_SEQ?"
-      p "Comparing new_board to board: #{new_board.object_id == board.object_id}"
-      p "Comparing new piece to piece: #{new_board[*pos].object_id == board[*pos].object_id}"
-      p "Comparing new grid to grid: #{new_board.grid.object_id == board.grid.object_id}"
-
       new_board[*pos].perform_moves!(moves)
     rescue MoveError
       false
@@ -53,21 +46,15 @@ class Piece
   end
 
   def perform_moves!(moves)
-    # if moves.length == 1
-    #   perform_move(moves.first)
-    # else
-      moves.each { |move| perform_move(move)}
-    # end
+    moves.each { |move| perform_move(move)}
   end
 
   def perform_move(end_pos)
-    p "Checking move from #{pos} to #{end_pos}"
     if valid_slide?(end_pos)
       perform_slide(end_pos)
     elsif valid_jump?(end_pos)
       perform_jump(end_pos)
     else
-      p "Raised error for move from #{pos} to #{end_pos}"
       raise MoveError.new("Invalid move")
     end
   end
