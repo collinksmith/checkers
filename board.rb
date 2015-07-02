@@ -7,9 +7,10 @@ class Board
   attr_reader :grid, :size
 
   def initialize(size, grid = nil)
-    @grid = grid || populate_grid(size)
+    @size = size
     @cursor_pos = [0, 0]
     @selected_pos = nil
+    @grid = grid || populate_grid(size)
   end
 
   def display
@@ -23,11 +24,11 @@ class Board
     when :up
       self.cursor_pos = [pos_row - 1, pos_col] unless pos_row < 1
     when :left
-      self.cursor_pos = [pos_row, pos_col - 1] unless pow_col < 1
+      self.cursor_pos = [pos_row, pos_col - 1] unless pos_col < 1
     when :down
       self.cursor_pos = [pos_row + 1, pos_col] unless pos_row > (size - 1)
     when :right
-      self.cursor_pos = [pos_row, pos_col + 1] unless pos-col > (size - 1)
+      self.cursor_pos = [pos_row, pos_col + 1] unless pos_col > (size - 1)
     end
   end
 
