@@ -75,6 +75,7 @@ class Board
 
   def reset_selected_pos
     self.selected_pos = nil
+    reset_move_seq
   end
 
   def add_to_move_seq(pos)
@@ -92,10 +93,27 @@ class Board
 
   def
 
-  def dup
-    new_grid = grid.map { |row| row.map { |piece| piece.dup } }
-    new_board = Board.new(size, new_grid)
-    new_board.grid.map { |row| row.map { |piece| piece.board = self } }
+  def deep_dup
+    p "DUPING THE BOARD"
+    new_grid = dup_grid
+    # new_grid = grid.map { |row| row.map { |piece| piece.dup } }
+    new_board = self.class.new(size, new_grid)
+    new_board.grid.map! { |row| row.map! { |piece| piece.board = self } }
+    new_board
+  end
+
+  def dup_grid
+    new_grid = Array.new(8) { [] }
+    grid.each_with_index do |row, row_i|
+      row.each do |cell|
+        p "duping #{cell}"
+        new_grid[row_i] << cell.dup
+      end
+    end
+
+    p "TESTING DUP_GRID METHOD: #{new_grid == grid}"
+
+    new_grid
   end
 
   protected
