@@ -13,13 +13,13 @@ class Game
   def process_input(input)
     case input
     when 'w'
-      board.cursor_up
+      board.move_cursor(:up)
     when 'a'
-      board.cursor_left
+      board.move_cursor(:left)
     when 's'
-      board.cursor_down
+      board.move_cursor(:down)
     when 'd'
-      board.cursor_right
+      board.move_cursor(:right)
     when 'q'
       exit
     end
