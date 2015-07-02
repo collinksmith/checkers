@@ -40,6 +40,10 @@ class Board
     self[*cursor_pos]
   end
 
+  def remove_piece(pos)
+    self[*pos] = EmptySquare.new
+  end
+
   def all_pieces
     grid.flatten
   end
