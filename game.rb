@@ -10,7 +10,7 @@ class Game
   end
 
   def play
-    loop do
+    until game_over?
       display_board
 
       moved = false
@@ -22,6 +22,15 @@ class Game
 
       switch_players!
     end
+  end
+
+  def game_over?
+    no_pieces?(:black) || no_pieces?(:white)
+  end
+
+  def no_pieces?(color)
+    pieces = board.all_pieces
+    pieces.none? { |piece| piece.color == color }
   end
 
   def display_board

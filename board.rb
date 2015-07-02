@@ -38,6 +38,10 @@ class Board
     self[*cursor_pos]
   end
 
+  def all_pieces
+    grid.flatten
+  end
+
   def display
     puts render
   end
