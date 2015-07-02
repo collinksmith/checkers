@@ -3,13 +3,14 @@ require_relative 'empty_square'
 
 
 class Board
-  attr_reader :grid, :size, :cursor_pos, :selected_pos
+  attr_reader :grid, :size, :cursor_pos, :selected_pos, :move_seq
   attr_accessor :current_player_color
 
   def initialize(size = 8, grid = nil)
     @size = size
     @cursor_pos = [0, 0]
     @selected_pos = nil
+    @move_seq = []
     @grid = grid || populate_grid(size)
     @current_player_color = :white
   end
@@ -69,11 +70,27 @@ class Board
 
   def set_selected_pos
     self.selected_pos = cursor_pos
+    add_to_move_seq(cursor_pos)
   end
 
   def reset_selected_pos
     self.selected_pos = nil
   end
+
+  def add_to_move_seq(pos)
+    begin
+      raise MoveError.new("Invalid move.") unless selected_piece.valid_move?(pos)
+      self.move_seq << pos
+    rescue => e
+      puts e.message
+    end
+  end
+
+  def reset_move_seq
+    self.move_seq = []
+  end
+
+  def
 
   def dup
     new_grid = grid.map { |row| row.map { |piece| piece.dup } }
@@ -87,7 +104,7 @@ class Board
 
   private
 
-  attr_writer :cursor_pos, :selected_pos
+  attr_writer :cursor_pos, :selected_pos, :move_seq
 
   def render
     grid.map.with_index do |row, row_i|
