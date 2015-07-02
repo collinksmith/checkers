@@ -12,6 +12,14 @@ class Board
     @grid = grid || populate_grid(size)
   end
 
+  def [](row, col)
+    @grid[row][col]
+  end
+
+  def []=(row, col, value)
+    @grid[row][col] = value
+  end
+
   def move
 
   end
