@@ -1,4 +1,5 @@
 require_relative 'board'
+require_relative 'human_player'
 
 class Game
   attr_reader :board, :players
@@ -10,9 +11,15 @@ class Game
 
   def play
     loop do
+      display_board
       input = current_player.get_input
       process_input(input)
     end
+  end
+
+  def display_board
+    system('clear')
+    board.display
   end
 
   def current_player
@@ -34,3 +41,6 @@ class Game
     end
   end
 end
+
+game = Game.new(HumanPlayer.new(:black), HumanPlayer.new(:white))
+game.play
