@@ -13,7 +13,6 @@ class Board
   end
 
   def display
-    system('clear')
     puts render
   end
 
@@ -86,6 +85,3 @@ class Board
     end
   end
 end
-
-board = Board.new(8)
-board.display
