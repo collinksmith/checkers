@@ -3,8 +3,7 @@ require_relative 'empty_square'
 
 
 class Board
-  attr_accessor :cursor_pos
-  attr_reader :grid, :size
+  attr_reader :grid, :size, :cursor_pos, :selected_pos
 
   def initialize(size, grid = nil)
     @size = size
@@ -32,7 +31,17 @@ class Board
     end
   end
 
+  def set_selected_pos
+    self.selected_pos = cursor_pos
+  end
+
+  def reset_selected_pos
+    self.selected_pos = nil
+  end
+
   private
+
+  attr_writer :cursor_pos, :selected_pos
 
   def render
     grid.map.with_index do |row, row_i|
@@ -42,8 +51,10 @@ class Board
 
   def render_row(row, row_i)
     row.map.with_index do |cell, col_i|
-      if [row_i, col_i] == cursor_pos
-        cell.to_s.colorize(:background => :cyan)
+      if [row_i, col_i] == selected_pos
+        cell.to_s.colorize(:background => :light_magenta)
+      elsif [row_i, col_i] == cursor_pos
+        cell.to_s.colorize(:background => :light_cyan)
       elsif (row_i + col_i) % 2 == 0
         cell.to_s.colorize(:background => :yellow)
       else

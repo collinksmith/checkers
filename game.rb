@@ -36,6 +36,13 @@ class Game
       board.move_cursor(:down)
     when 'd'
       board.move_cursor(:right)
+    when "\r"
+      if board.selected_pos
+        # Move Piece
+        board.reset_selected_pos
+      else
+        board.set_selected_pos
+      end
     when 'q'
       exit
     end
