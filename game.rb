@@ -49,5 +49,5 @@ class Game
   end
 end
 
-game = Game.new(HumanPlayer.new(:black), HumanPlayer.new(:white))
+game = Game.new(HumanPlayer.new(:white), HumanPlayer.new(:black))
 game.play

@@ -12,6 +12,10 @@ class Board
     @grid = grid || populate_grid(size)
   end
 
+  def move
+
+  end
+
   def display
     puts render
   end
@@ -69,9 +73,9 @@ class Board
     grid.map.with_index do |row, row_i|
       if row_i <= 2
         if row_i % 2 == 0
-          fill_row(row, true, :red)
+          fill_row(row, true, :black)
         else
-          fill_row(row, false, :red)
+          fill_row(row, false, :black)
         end
       elsif row_i >= 5
         if row_i % 2 == 0

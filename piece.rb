@@ -13,10 +13,8 @@ class Piece
   end
 
   def symbol
-    if color == :red
-      "\u26AA"
-    else
-      "\u26AB"
-    end
+    color == :white ? "\u26AA" : "\u26AB"
   end
+
+
 end
