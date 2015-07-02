@@ -1,3 +1,5 @@
+require 'io/console'
+
 class HumanPlayer
   def initialize(color)
     @color = color
