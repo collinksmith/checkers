@@ -7,6 +7,8 @@ class Board
 
   def initialize(size, grid = nil)
     @grid = grid || populate_grid(size)
+    @cursor_pos = [0, 0]
+    @selected_pos = nil
   end
 
   def populate_grid(size)
