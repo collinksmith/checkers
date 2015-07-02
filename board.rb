@@ -20,8 +20,22 @@ class Board
     @grid[row][col] = value
   end
 
-  def move
+  def move(start_pos, end_pos)
+    piece = selected_piece
+    self[*start_pos] = cursor_piece
+    self[*end_pos] = piece
+  end
 
+  def selected_piece
+    if selected_pos
+      self[*selected_pos]
+    else
+      raise "Trying to select a piece that doesn't exist"
+    end
+  end
+
+  def cursor_piece
+    self[*cursor_pos]
   end
 
   def display
