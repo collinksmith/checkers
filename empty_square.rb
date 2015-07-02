@@ -10,4 +10,8 @@ class EmptySquare
   def valid_move?(end_pos)
     false
   end
+
+  def color
+    nil
+  end
 end
