@@ -14,9 +14,9 @@ class Piece
 
   def symbol
     if color == :red
-      "\u26AA".colorize(:color => :red)
+      "\u26AA"
     else
-      "\u26AB".colorize(:color => :white)
+      "\u26AB"
     end
   end
 end
