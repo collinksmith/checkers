@@ -4,12 +4,14 @@ require_relative 'empty_square'
 
 class Board
   attr_reader :grid, :size, :cursor_pos, :selected_pos
+  attr_accessor :current_player_color
 
   def initialize(size, grid = nil)
     @size = size
     @cursor_pos = [0, 0]
     @selected_pos = nil
     @grid = grid || populate_grid(size)
+    @current_player_color = :white
   end
 
   def [](row, col)
@@ -83,7 +85,11 @@ class Board
     row.map.with_index do |cell, col_i|
       pos = row_i, col_i
 
-      if self[*cursor_pos].valid_move?(pos)
+      if !selected_pos.nil? && selected_piece.valid_move?(pos) &&
+         current_player_color == selected_piece.color
+        cell.to_s.colorize(:background => :light_red)
+      elsif selected_pos.nil? && cursor_piece.valid_move?(pos) &&
+            current_player_color == cursor_piece.color
         cell.to_s.colorize(:background => :light_red)
       elsif pos == selected_pos
         cell.to_s.colorize(:background => :light_magenta)

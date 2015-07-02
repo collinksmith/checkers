@@ -45,6 +45,7 @@ class Game
 
   def switch_players!
     players.rotate!
+    board.current_player_color = current_player.color
   end
 
   def process_input(input)

@@ -54,10 +54,8 @@ class Piece
   attr_writer :pos
 
   def valid_slide?(end_pos)
-    end_row, end_col = end_pos[0], end_pos[1]
-    start_row, start_col = pos[0], pos[1]
-    row_change = end_row - start_row
-    col_change = end_col - start_col
+    row_change = end_pos[0] - pos[0]
+    col_change = end_pos[1] - pos[1]
 
     return false unless on_board?(end_pos) && board[*end_pos].empty?
 
