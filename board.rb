@@ -73,15 +73,15 @@ class Board
     grid.map.with_index do |row, row_i|
       if row_i <= 2
         if row_i % 2 == 0
-          fill_row(row, true, :black)
+          fill_row(row, row_i, true, :black)
         else
-          fill_row(row, false, :black)
+          fill_row(row, row_i, false, :black)
         end
       elsif row_i >= 5
         if row_i % 2 == 0
-          fill_row(row, true, :white)
+          fill_row(row, row_i, true, :white)
         else
-          fill_row(row, false, :white)
+          fill_row(row, row_i, false, :white)
         end
       end
     end
@@ -89,14 +89,14 @@ class Board
     grid
   end
 
-  def fill_row(row, odd, color)
+  def fill_row(row, row_i, odd, color)
     if odd
       row.map.with_index do |cell, col_i|
-        row[col_i] = Piece.new(color) unless col_i % 2 == 0
+        row[col_i] = Piece.new(color, [row_i, col_i]) unless col_i % 2 == 0
       end
     else
       row.map.with_index do |cell, col_i|
-        row[col_i] = Piece.new(color) if col_i % 2 == 0
+        row[col_i] = Piece.new(color, [row_i, col_i]) if col_i % 2 == 0
       end
     end
   end
