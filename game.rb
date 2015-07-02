@@ -15,9 +15,16 @@ class Game
 
       moved = false
       until moved
-        input = current_player.get_input
-        moved = process_input(input)
-        display_board
+        begin
+          input = current_player.get_input
+          moved = process_input(input)
+          display_board
+        rescue MoveError => e
+          board.reset_selected_pos
+          display_board
+          puts e.message
+          retry
+        end
       end
 
       switch_players!

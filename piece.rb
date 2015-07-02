@@ -1,3 +1,4 @@
+require_relative 'errors'
 require 'colorize'
 
 class Piece
@@ -26,6 +27,8 @@ class Piece
     if valid_move?(end_pos)
       board.move(pos, end_pos)
       self.pos = end_pos
+    else
+      raise MoveError.new("Invalid move")
     end
   end
 
