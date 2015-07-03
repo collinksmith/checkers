@@ -29,6 +29,8 @@ class Game
 
       switch_players!
     end
+
+    puts "Game over. #{players.last.to_s.capitalize} wins!"
   end
 
   def game_over?
@@ -36,8 +38,7 @@ class Game
   end
 
   def no_pieces?(color)
-    pieces = board.all_pieces
-    pieces.none? { |piece| piece.color == color }
+    board.all_pieces.none? { |piece| piece.color == color }
   end
 
   def display_board
