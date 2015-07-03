@@ -120,22 +120,30 @@ class Board
     row.map.with_index do |cell, col_i|
       pos = row_i, col_i
 
-      if !selected_pos.nil? && selected_piece.valid_move?(pos) &&
-         current_player_color == selected_piece.color
+      if pos == cursor_pos
+        cell.to_s.colorize(:background => :light_cyan)
+      elsif selected_pos && current_player_color == selected_piece.color &&
+            (selected_piece.valid_move?(pos) || valid_move_from_seq?(pos))
         cell.to_s.colorize(:background => :light_red)
       elsif selected_pos.nil? && cursor_piece.valid_move?(pos) &&
             current_player_color == cursor_piece.color
         cell.to_s.colorize(:background => :light_red)
       elsif pos == selected_pos
         cell.to_s.colorize(:background => :light_magenta)
-      elsif pos == cursor_pos
-        cell.to_s.colorize(:background => :light_cyan)
       elsif (row_i + col_i) % 2 == 0
         cell.to_s.colorize(:background => :yellow)
       else
         cell.to_s.colorize(:background => :green)
       end
     end.join("")
+  end
+
+  def valid_move_from_seq?(pos)
+    move_seq.any? { |start_pos| test_piece(start_pos).valid_move?(pos) }
+  end
+
+  def test_piece(pos)
+    Piece.new(current_player_color, pos, self)
   end
 
   def populate_grid(size)
