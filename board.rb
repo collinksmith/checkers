@@ -139,11 +139,19 @@ class Board
   end
 
   def valid_move_from_seq?(pos)
-    move_seq.any? { |start_pos| test_piece(start_pos).valid_move?(pos) }
+    move_seq.any? do |start_pos|
+      if selected_piece.king?
+        piece = test_piece(start_pos, true)
+      else
+        piece = test_piece(start_pos, false)
+      end
+
+      piece.valid_move?(pos)
+    end
   end
 
-  def test_piece(pos)
-    Piece.new(current_player_color, pos, self)
+  def test_piece(pos, king)
+    Piece.new(current_player_color, pos, self, king)
   end
 
   def populate_grid(size)
