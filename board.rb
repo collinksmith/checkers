@@ -3,8 +3,8 @@ require_relative 'empty_square'
 
 
 class Board
-  attr_reader :grid, :size, :cursor_pos, :selected_pos, :move_seq
-  attr_accessor :current_player_color
+  attr_reader :size, :cursor_pos, :selected_pos, :move_seq
+  attr_accessor :current_player_color, :grid
 
   def initialize(size = 8, grid = nil, cursor_pos = [0, 0], selected_pos = nil,
                  move_seq = [], current_player_color = :white)
@@ -25,9 +25,10 @@ class Board
   end
 
   def move(start_pos, end_pos)
-    piece = selected_piece
-    self[*start_pos] = cursor_piece
-    self[*end_pos] = piece
+    start_piece = self[*start_pos]
+    self[*start_pos] = EmptySquare.new
+    self[*end_pos] = start_piece
+    start_piece.update_pos(end_pos)
   end
 
   def selected_piece
@@ -71,7 +72,6 @@ class Board
 
   def set_selected_pos
     self.selected_pos = cursor_pos
-    add_to_move_seq(cursor_pos)
   end
 
   def reset_selected_pos
@@ -81,21 +81,19 @@ class Board
 
   def add_to_move_seq(pos)
     begin
-      raise MoveError.new("Invalid move.") unless selected_piece.valid_move?(pos)
+      # test_seq = dup_move_seq << pos
+      # unless selected_piece.valid_move_seq?(test_seq)
+      #   raise MoveError.new("Invalid move.")
+      # end
       self.move_seq << pos
-    rescue => e
+    rescue MoveError => e
       puts e.message
     end
+    p "new move seq is #{move_seq}"
   end
 
   def reset_move_seq
     self.move_seq = []
-  end
-
-  def
-
-  def tester
-    puts "test"
   end
 
   def deep_dup
@@ -103,7 +101,7 @@ class Board
     new_board = self.class.new(size, new_grid, cursor_pos.dup, selected_pos.dup,
                                dup_move_seq, current_player_color)
 
-    new_board.all_pieces.each { |piece| piece.board = new_board }
+    new_board.all_pieces.map { |piece| piece.board = new_board }
 
     new_board
   end
@@ -115,8 +113,6 @@ class Board
   end
 
   protected
-
-  attr_writer :grid
 
   private
 

@@ -3,7 +3,7 @@ require 'colorize'
 require 'byebug'
 
 class Piece
-  attr_reader :color, :pos, :kinged
+  attr_reader :color, :pos
   attr_accessor :board
 
   def initialize(color, pos, board = nil, kinged = false)
@@ -18,7 +18,11 @@ class Piece
   end
 
   def symbol
-    color == :white ? "\u26AA" : "\u26AB"
+    if king?
+      color == :white ? "\u26AA" : "\u26AB"
+    else
+      color == :white ? "\u26AA" : "\u26AB"
+    end
   end
 
   def empty?
@@ -26,11 +30,10 @@ class Piece
   end
 
   def perform_moves(moves)
-    p "Checking moves: #{moves}"
     if valid_move_seq?(moves)
       perform_moves!(moves)
     else
-      raise MoveError.new("Invalid move sequence.")
+      raise MoveError.new("Invalid move.")
     end
   end
 
@@ -46,7 +49,7 @@ class Piece
   end
 
   def perform_moves!(moves)
-    moves.each { |move| perform_move(move)}
+    moves.each { |move| perform_move(move) }
   end
 
   def perform_move(end_pos)
@@ -57,21 +60,32 @@ class Piece
     else
       raise MoveError.new("Invalid move")
     end
+
+    maybe_promote
+  end
+
+  def maybe_promote
+    back_row = color == :white ? 0 : 7
+
+    if pos.first == back_row
+      self.kinged = true
+      puts "Kinged!"
+    end
+  end
+
+  def update_pos(pos)
+    self.pos = pos
   end
 
   def perform_slide(end_pos)
     if valid_slide?(end_pos)
       board.move(pos, end_pos)
-      self.pos = end_pos
     end
   end
 
   def perform_jump(end_pos)
-    if valid_jump?(end_pos)
-      board.move(pos, end_pos)
-      remove_jumped_piece(pos, end_pos)
-      self.pos = end_pos
-    end
+    remove_jumped_piece(pos, end_pos)
+    board.move(pos, end_pos)
   end
 
   def valid_move?(end_pos)
@@ -89,6 +103,7 @@ class Piece
   private
 
   attr_writer :pos
+  attr_accessor :kinged
 
   def valid_slide?(end_pos)
     row_change = end_pos[0] - pos[0]
@@ -133,6 +148,7 @@ class Piece
 
     mid_row = pos[0] + (row_change / 2)
     mid_col = pos[1] + (col_change / 2)
+
     [mid_row, mid_col]
   end
 
