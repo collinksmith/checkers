@@ -19,8 +19,6 @@ class Game
           input = current_player.get_input
           moved = process_input(input)
           display_board
-          p "selected pos is #{board.selected_pos}"
-
         rescue MoveError => e
           board.reset_selected_pos
           display_board
@@ -60,7 +58,6 @@ class Game
   def process_input(input)
     case input
     when 'w'
-      puts "Selected w"
       board.move_cursor(:up)
     when 'a'
       board.move_cursor(:left)

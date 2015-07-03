@@ -80,16 +80,8 @@ class Board
   end
 
   def add_to_move_seq(pos)
-    begin
-      # test_seq = dup_move_seq << pos
-      # unless selected_piece.valid_move_seq?(test_seq)
-      #   raise MoveError.new("Invalid move.")
-      # end
-      self.move_seq << pos
+    self.move_seq << pos
     rescue MoveError => e
-      puts e.message
-    end
-    p "new move seq is #{move_seq}"
   end
 
   def reset_move_seq
